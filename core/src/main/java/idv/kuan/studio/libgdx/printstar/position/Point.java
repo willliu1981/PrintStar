@@ -1,4 +1,4 @@
-package idv.kuan.studio.libgdx.printstar.lwjgl3.position;
+package idv.kuan.studio.libgdx.printstar.position;
 
 public class Point {
     private int x;
