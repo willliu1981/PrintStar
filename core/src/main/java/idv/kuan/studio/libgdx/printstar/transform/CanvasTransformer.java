@@ -12,17 +12,15 @@ public class CanvasTransformer {
     private float cellSize;
     private float gapX;
     private float gapY;
-    private char placeholder;
 
     public CanvasTransformer() {
-        this(2.0f, 20.0f, 10.0f, ' ');
+        this(2.0f, 20.0f, 10.0f);
     }
 
-    public CanvasTransformer(float cellSize, float gapX, float gapY, char placeholder) {
+    public CanvasTransformer(float cellSize, float gapX, float gapY) {
         this.cellSize = cellSize;
         this.gapX = gapX;
         this.gapY = gapY;
-        this.placeholder = placeholder;
     }
 
     public Canvas transform(Canvas source) {

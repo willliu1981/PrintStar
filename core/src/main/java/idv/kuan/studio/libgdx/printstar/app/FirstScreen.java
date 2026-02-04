@@ -31,10 +31,32 @@ public class FirstScreen extends ScreenAdapter {
 
     }
 
+    int direction = 1;
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        float cellSize = canvas.getTransformer().getCellSize();
+        float d = 0.031f;
+        if (direction == 1) {
+            cellSize += d;
+        } else {
+            cellSize -= d;
+        }
+
+
+        if (cellSize > 10) {
+            direction = -1;
+        } else if (cellSize < 1.0f) {
+            direction = 1;
+        }
+
+        if (cellSize < 1.0f) {
+            cellSize = 1.0f;
+        }
+        canvas.getTransformer().setCellSize(cellSize);
 
         spriteBatch.begin();
         canvas.render(spriteBatch, 120.0f, 540.0f);
