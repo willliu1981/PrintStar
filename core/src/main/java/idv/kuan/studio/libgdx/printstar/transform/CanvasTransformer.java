@@ -14,7 +14,7 @@ public class CanvasTransformer {
     private float gapY;
 
     public CanvasTransformer() {
-        this(2.0f, 20.0f, 10.0f);
+        this(2.0f, 10.0f, 10.0f);
     }
 
     public CanvasTransformer(float cellSize, float gapX, float gapY) {

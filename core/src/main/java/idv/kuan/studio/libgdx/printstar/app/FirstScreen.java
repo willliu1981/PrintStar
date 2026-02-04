@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import idv.kuan.studio.libgdx.printstar.canvas.Canvas;
 import idv.kuan.studio.libgdx.printstar.canvas.matrix.CanvasMatrix;
+import idv.kuan.studio.libgdx.printstar.shape.Circle;
 import idv.kuan.studio.libgdx.printstar.shape.Triangle;
 import idv.kuan.studio.libgdx.printstar.transform.CanvasTransformer;
 
@@ -29,9 +30,13 @@ public class FirstScreen extends ScreenAdapter {
         canvas.getTransformer().setCellSize(2.0f);
 
         Triangle triangle = new Triangle();
-        canvas.paint(triangle, 1, 1, 7, Canvas.FLIP.FLIP_Y);
-        canvas.paint(triangle, 1, 1, 7);
+        canvas.paint(triangle, 0, 0, 7, Canvas.FLIP.FLIP_Y);
+        canvas.paint(triangle, 0, 0, 7);
 
+        Circle circle = new Circle();
+        canvas.paint(circle, 10, 0, 30);
+
+        System.out.println("print star:\n" + canvas.exportAsString());
 
     }
 
@@ -46,8 +51,7 @@ public class FirstScreen extends ScreenAdapter {
         bitmapFont.getData().setScale(2.0f);
 
         spriteBatch.begin();
-        bitmapFont.draw(spriteBatch, gridString, 120.0f, 540.0f);
-        canvas.render(spriteBatch, 240.0f, 540.0f);
+        canvas.render(spriteBatch, 240.0f, 800.0f);
         spriteBatch.end();
     }
 
