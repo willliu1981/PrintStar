@@ -30,6 +30,8 @@ public class FirstScreen extends ScreenAdapter {
 
         Triangle triangle = new Triangle();
         canvas.paint(triangle, 1, 1, 7, Canvas.FLIP.FLIP_Y);
+        canvas.paint(triangle, 1, 1, 7);
+
 
     }
 

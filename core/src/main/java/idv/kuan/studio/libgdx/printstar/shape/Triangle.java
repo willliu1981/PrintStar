@@ -26,6 +26,6 @@ public class Triangle extends Shape {
             }
         }
 
-        return new Point(size / 2, countY / 2);
+        return new Point(size / 2, 0 );
     }
 }

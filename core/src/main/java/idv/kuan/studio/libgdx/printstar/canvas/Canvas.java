@@ -91,32 +91,56 @@ public class Canvas {
             return new char[0][0];
         }
 
-        int maxX = 0, maxY = 0;
+        int maxX = Integer.MIN_VALUE;
+        int minX = Integer.MAX_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE;
 
         for (Point point : cells.keySet()) {
-            if (point.getGridX() > maxX) {
-                maxX = point.getGridX();
+            int gridX = point.getGridX();
+            int gridY = point.getGridY();
+
+            if (gridX > maxX) {
+                maxX = gridX;
             }
-            if (point.getGridY() > maxY) {
-                maxY = point.getGridY();
+            if (gridX < minX) {
+                minX = gridX;
+            }
+            if (gridY > maxY) {
+                maxY = gridY;
+            }
+            if (gridY < minY) {
+                minY = gridY;
             }
         }
 
-        char[][] grid = new char[maxY + 1][maxX + 1];
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
 
-        for (int rowIndex = 0; rowIndex <= maxY; rowIndex++) {
-            for (int colIndex = 0; colIndex <= maxX; colIndex++) {
+        char[][] grid = new char[height][width];
+
+        for (int rowIndex = 0; rowIndex < grid.length; rowIndex++) {
+            for (int colIndex = 0; colIndex < grid[rowIndex].length; colIndex++) {
                 grid[rowIndex][colIndex] = placeholder;
             }
         }
 
         for (Map.Entry<Point, CanvasMatrix.ProjectedCell> entry : cells.entrySet()) {
             Point point = entry.getKey();
-            Character value = entry.getValue().getCharacter();
+            char value = entry.getValue().getCharacter();
 
-            if (value != null) {
-                grid[point.getGridY()][point.getGridX()] = value;
+            int rowIndex = point.getGridY() - minY;
+            int colIndex = point.getGridX() - minX;
+
+            // ✅ 防呆：避免任何意外越界造成隱性問題
+            if (rowIndex < 0 || rowIndex >= grid.length) {
+                continue;
             }
+            if (colIndex < 0 || colIndex >= grid[rowIndex].length) {
+                continue;
+            }
+
+            grid[rowIndex][colIndex] = value;
         }
 
         return grid;
