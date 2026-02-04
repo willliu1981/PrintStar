@@ -2,7 +2,7 @@ package idv.kuan.studio.libgdx.printstar.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import idv.kuan.studio.libgdx.printstar.Main;
+import idv.kuan.studio.libgdx.printstar.app.Main;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {

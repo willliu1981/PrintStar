@@ -1,4 +1,4 @@
-package idv.kuan.studio.libgdx.printstar;
+package idv.kuan.studio.libgdx.printstar.app;
 
 import com.badlogic.gdx.Game;
 

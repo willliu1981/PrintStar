@@ -2,74 +2,78 @@ package idv.kuan.studio.libgdx.printstar.canvas;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import idv.kuan.studio.libgdx.printstar.position.Point;
+import idv.kuan.studio.libgdx.printstar.canvas.matrix.CanvasMatrix;
+import idv.kuan.studio.libgdx.printstar.shape.Shape;
+import idv.kuan.studio.libgdx.printstar.transform.CanvasTransformer;
 
 public class Canvas {
-    private Map<Point, Character> position;
-    private float unitSize;
-    private float gap;
+    private Map<Point, Character> cells;
+
+    private CanvasMatrix matrix;
+    private CanvasTransformer transformer;
 
     public Canvas() {
-        position = new HashMap<>();
-        gap = 10.0f;
-        unitSize = 2.0f;
+        cells = new HashMap<>();
+        transformer = new CanvasTransformer();
     }
 
 
-    public void draw(Shape shape, int x, int y, int size) {
+    public void paint(Shape shape, int x, int y, int size) {
         shape.draw(size);
 
-        shape.position.forEach((position, signal) -> {
-            int cx = position.getX() + x;
-            int cy = position.getY() + y;
-            this.position.put(new Point(cx, cy), signal);
+        shape.getCells().forEach((point, character) -> {
+            int cx = point.getGridX() + x;
+            int cy = point.getGridY() + y;
+            this.cells.put(new Point(cx, cy), character);
         });
     }
 
-    public void draw(SpriteBatch spriteBatch, float x, float y) {
+    public void render(SpriteBatch spriteBatch, float startX, float startY) {
+
+        Canvas transformedCanvas = transformer.transform(this);
+        CanvasMatrix canvasMatrix = transformedCanvas.getMatrix();
+
         BitmapFont bitmapFont = new BitmapFont();
-        bitmapFont.getData().setScale(unitSize);
+        bitmapFont.getData().setScale(transformer.getCellSize());
 
-        this.position.forEach((position, signal) -> {
-            bitmapFont.draw(spriteBatch, signal.toString(), position.getX() * gap + x, position.getY() * gap + y);
-        });
-    }
-
-    public static abstract class Shape {
-        private Map<Point, Character> position;
-        private Printer printer;
-
-        public Shape() {
-            position = new HashMap<>();
-            printer = new Printer();
-        }
-
-        private void draw(int size) {
-            draw(printer, size);
-        }
-
-
-        protected abstract void draw(Printer printer, int size);
-
-
-        public class Printer {
-            public void set(int x, int y, char signal) {
-                position.put(new Point(x, y), signal);
-            }
-
-            public void set(int x, int y, String signal) {
-                position.put(new Point(x, y), signal.trim().charAt(0));
-            }
-
-            public void clear(int x, int y) {
-                position.remove(new Point(x, y));
-            }
+        if (canvasMatrix != null) {
+            canvasMatrix.getMatrix().values().forEach(cell -> {
+                Vector2 vector2 = cell.getWorldPosition();
+                bitmapFont.draw(
+                    spriteBatch,
+                    cell.getString(),
+                    vector2.x + startX,
+                    vector2.y + startY);
+            });
         }
     }
 
+    public String exportAsString() {
+        StringBuilder stringBuilder = new StringBuilder();
 
+        return null;
+    }
+
+
+    //getter & setter
+    public Map<Point, Character> getCells() {
+        return cells;
+    }
+
+    public CanvasMatrix getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(CanvasMatrix matrix) {
+        this.matrix = matrix;
+    }
+
+    public CanvasTransformer getTransformer() {
+        return transformer;
+    }
 }
