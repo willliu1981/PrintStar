@@ -9,6 +9,7 @@ import idv.kuan.studio.libgdx.printstar.canvas.writer.CellWriter;
 
 public abstract class Shape {
     private Map<Point, Character> cells;
+    private Point pivot;
 
     public Shape() {
         cells = new HashMap<>();
@@ -16,11 +17,19 @@ public abstract class Shape {
 
     public void draw(int size) {
         CellWriter printer = new CellMapWriter(cells);
-        draw(printer, size);
+        pivot = draw(printer, size);
+        if (pivot == null) {
+            pivot = new Point();
+        }
     }
 
 
-    protected abstract void draw(CellWriter cellMapWriter, int size);
+    /**
+     * @param cellMapWriter
+     * @param size
+     * @return flip pivot
+     */
+    protected abstract Point draw(CellWriter cellMapWriter, int size);
 
     //getter and setter
 
@@ -29,5 +38,7 @@ public abstract class Shape {
         return cells;
     }
 
-
+    public Point getPivot() {
+        return pivot;
+    }
 }

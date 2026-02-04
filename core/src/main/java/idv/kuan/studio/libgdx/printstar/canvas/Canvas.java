@@ -27,12 +27,24 @@ public class Canvas {
         this.placeholder = placeholder;
     }
 
+    //classes
+    public enum FLIP {
+        FLIP_X, FLIP_Y, NONE
+    }
+
     public void paint(Shape shape, int x, int y, int size) {
+        paint(shape, x, y, size, FLIP.NONE);
+    }
+
+    public void paint(Shape shape, int x, int y, int size, FLIP flip) {
         shape.draw(size);
 
         shape.getCells().forEach((point, character) -> {
-            int cx = point.getGridX() + x;
-            int cy = point.getGridY() + y;
+            int flippedX = flip == FLIP.FLIP_X ? shape.getPivot().getGridX() * 2 - point.getGridX() : point.getGridX();
+            int flippedY = flip == FLIP.FLIP_Y ? shape.getPivot().getGridY() * 2 - point.getGridY() : point.getGridY();
+
+            int cx = flippedX + x;
+            int cy = flippedY + y;
             this.cells.put(new Point(cx, cy), character);
         });
     }
@@ -120,4 +132,6 @@ public class Canvas {
     public CanvasTransformer getTransformer() {
         return transformer;
     }
+
+
 }

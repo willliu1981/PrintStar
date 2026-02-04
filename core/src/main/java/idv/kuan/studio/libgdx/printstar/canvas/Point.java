@@ -7,6 +7,8 @@ public class Point {
     private int gridY;
 
     public Point() {
+        gridX = 0;
+        gridY = 0;
     }
 
     public Point(int gridX, int gridY) {
