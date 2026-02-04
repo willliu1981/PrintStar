@@ -3,21 +3,18 @@ package idv.kuan.studio.libgdx.printstar.app;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import idv.kuan.studio.libgdx.printstar.canvas.Canvas;
 import idv.kuan.studio.libgdx.printstar.canvas.CanvasBoard;
-import idv.kuan.studio.libgdx.printstar.canvas.matrix.CanvasMatrix;
-import idv.kuan.studio.libgdx.printstar.shape.Circle;
-import idv.kuan.studio.libgdx.printstar.shape.Triangle;
-import idv.kuan.studio.libgdx.printstar.transform.CanvasTransformer;
+import idv.kuan.studio.libgdx.printstar.shape.FlagSun;
+import idv.kuan.studio.libgdx.printstar.shape.Rect;
+import idv.kuan.studio.libgdx.printstar.shape.Shape;
 
 
 public class FirstScreen extends ScreenAdapter {
 
     private SpriteBatch spriteBatch;
-    private BitmapFont bitmapFont;
 
     private Canvas canvas;
     private CanvasBoard canvasBoard;
@@ -26,20 +23,32 @@ public class FirstScreen extends ScreenAdapter {
     @Override
     public void show() {
         spriteBatch = new SpriteBatch();
-        bitmapFont = new BitmapFont();
 
         canvas = new Canvas();
-        canvas.getTransformer().setCellSize(2.0f);
+        canvas.getTransformer().setCellSize(0.6f);
 
         canvasBoard = new CanvasBoard();
-        canvasBoard.add(new Triangle(), 0, 0, 7, Canvas.FLIP.FLIP_Y);
-        canvasBoard.add(new Triangle(), 0, 0, 7);
-        canvasBoard.add(new Circle(), 10, 0, 30);
+
+        int flagHeight =160;
+        int flagWidth = flagHeight * 3 / 2;
+
+        // 1) 滿地紅（整面）
+        canvasBoard.add(new Rect(Shape.Material.RED), 0, 0, flagHeight);
+
+        // 2) 左上青天（高度一半、寬度一半）
+        canvasBoard.add(new Rect(Shape.Material.BLUE), 0, 0, flagHeight / 2);
+
+        // 3) 白日（置中於青天）
+        int sunSize = flagHeight / 2 + 10;
+        int sunX = (flagWidth / 4) - (sunSize / 2);
+        int sunY = (flagHeight / 4) - (sunSize / 2);
+
+        canvasBoard.add(new FlagSun(), sunX, sunY, sunSize);
+
 
         canvasBoard.drawOn(canvas);
 
-        System.out.println("print star:\n" + canvas.exportAsString());
-
+        Gdx.app.log("Print Star", "\n" + canvas.exportAsString());
     }
 
 
@@ -48,12 +57,9 @@ public class FirstScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        String gridString = canvas.exportAsString();
-
-        bitmapFont.getData().setScale(2.0f);
 
         spriteBatch.begin();
-        canvas.render(spriteBatch, 240.0f, 800.0f);
+        canvas.render(spriteBatch, 80.0f, 1040.0f);
         spriteBatch.end();
     }
 

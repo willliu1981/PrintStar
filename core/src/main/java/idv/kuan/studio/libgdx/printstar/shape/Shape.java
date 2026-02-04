@@ -41,4 +41,24 @@ public abstract class Shape {
     public Point getPivot() {
         return pivot;
     }
+
+
+    //classes
+    // ===== 材質設計：青 / 白 / 紅 =====
+
+    public enum Material {
+        RED("-"),
+        BLUE("."),
+        WHITE("+");
+
+        private final String token;
+
+        Material(String token) {
+            this.token = token;
+        }
+
+        public String token() {
+            return token;
+        }
+    }
 }
