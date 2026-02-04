@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import idv.kuan.studio.libgdx.printstar.canvas.Canvas;
+import idv.kuan.studio.libgdx.printstar.canvas.matrix.CanvasMatrix;
 import idv.kuan.studio.libgdx.printstar.shape.Triangle;
 import idv.kuan.studio.libgdx.printstar.transform.CanvasTransformer;
 
@@ -14,6 +15,7 @@ import idv.kuan.studio.libgdx.printstar.transform.CanvasTransformer;
 public class FirstScreen extends ScreenAdapter {
 
     private SpriteBatch spriteBatch;
+    private BitmapFont bitmapFont;
 
     private Canvas canvas;
 
@@ -21,7 +23,7 @@ public class FirstScreen extends ScreenAdapter {
     @Override
     public void show() {
         spriteBatch = new SpriteBatch();
-
+        bitmapFont = new BitmapFont();
 
         canvas = new Canvas();
         canvas.getTransformer().setCellSize(2.0f);
@@ -31,35 +33,19 @@ public class FirstScreen extends ScreenAdapter {
 
     }
 
-    int direction = 1;
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        float cellSize = canvas.getTransformer().getCellSize();
-        float d = 0.031f;
-        if (direction == 1) {
-            cellSize += d;
-        } else {
-            cellSize -= d;
-        }
+        String gridString = canvas.exportAsString();
 
-
-        if (cellSize > 10) {
-            direction = -1;
-        } else if (cellSize < 1.0f) {
-            direction = 1;
-        }
-
-        if (cellSize < 1.0f) {
-            cellSize = 1.0f;
-        }
-        canvas.getTransformer().setCellSize(cellSize);
+        bitmapFont.getData().setScale(2.0f);
 
         spriteBatch.begin();
-        canvas.render(spriteBatch, 120.0f, 540.0f);
+        bitmapFont.draw(spriteBatch, gridString, 120.0f, 540.0f);
+        canvas.render(spriteBatch, 240.0f, 540.0f);
         spriteBatch.end();
     }
 

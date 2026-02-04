@@ -23,7 +23,7 @@ public class CanvasTransformer {
         this.gapY = gapY;
     }
 
-    public Canvas transform(Canvas source) {
+    public CanvasMatrix transform(Canvas source) {
         Map<Point, Character> cells = source.getCells();
 
         CanvasMatrix matrix = new CanvasMatrix();
@@ -36,9 +36,7 @@ public class CanvasTransformer {
             matrix.put(projectedCell);
         });
 
-        Canvas canvas = new Canvas();
-        canvas.setMatrix(matrix);
-        return canvas;
+        return matrix;
     }
 
     //getter and setter
